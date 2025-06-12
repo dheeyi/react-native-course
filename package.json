@@ -7,11 +7,14 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
+    "clean": "react-native start --reset-cache",
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^1.9.0",
     "react": "19.0.0",
-    "react-native": "0.79.3"
+    "react-native": "0.79.3",
+    "react-native-dotenv": "^3.4.11"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

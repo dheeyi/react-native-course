@@ -91,6 +91,10 @@ const Slider = () => {
     });
   };
 
+  const handleWishlist = () => {
+    console.log('handleWishlist');
+  };
+
   useEffect(() => {
     getPopularMovies()
       .then((data) => {
@@ -139,7 +143,7 @@ const Slider = () => {
               color={colors.darkLight}
               text="+ Whislist"
               textColor={colors.white}
-              onPress={() => {console.log('Whislist');}}
+              onPress={handleWishlist}
             />
             <ACButton
                 color={colors.primary}

@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import {
   TouchableOpacity,
-  Text,
   StyleSheet,
   GestureResponderEvent,
 } from 'react-native';
+import ACText from './ACText';
 
 interface ButtonProps {
   color: string;
@@ -25,14 +25,13 @@ const ACButton: FC<ButtonProps> = ({ color, text, textColor, onPress, style }) =
       onPress={onPress}
       activeOpacity={0.7}
     >
-      <Text
-        style={[
-          styles.text,
-          { color: textColor },
-        ]}
-      >
-        {text}
-      </Text>
+      <ACText
+        text={text}
+        color={textColor}
+        fontSize={16}
+        fontWeight={600}
+        style={styles.textStyle}
+      />
     </TouchableOpacity>
   );
 };
@@ -46,9 +45,8 @@ const styles = StyleSheet.create({
     width: 155,
     height: 48,
   },
-  text: {
-    fontWeight: '600',
-    fontSize: 16,
+  textStyle: {
+    paddingTop: 2,
   },
 });
 

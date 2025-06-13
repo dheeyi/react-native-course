@@ -1,12 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Home from './src/screens/Home';
 import Slider from './src/screens/Slider.tsx';
+import {colors} from './src/config/colors.ts';
 
 function App(): React.JSX.Element {
   return (
     <View style={styles.mainContainer}>
-      <Home />
       <Slider />
     </View>
   );
@@ -15,6 +14,7 @@ function App(): React.JSX.Element {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
+    backgroundColor: colors.darkMode,
   },
 });
 

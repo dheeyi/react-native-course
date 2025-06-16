@@ -12,14 +12,15 @@ interface ButtonProps {
   textColor: string;
   onPress: (event: GestureResponderEvent) => void;
   style?: object;
+  isOutline?: boolean
 }
 
-const ACButton: FC<ButtonProps> = ({ color, text, textColor, onPress, style }) => {
+const ACButton: FC<ButtonProps> = ({ color, text, textColor, onPress, style, isOutline }) => {
   return (
     <TouchableOpacity
       style={[
         styles.button,
-        { backgroundColor: color },
+        !isOutline && { backgroundColor: color },
         style,
       ]}
       onPress={onPress}

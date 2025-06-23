@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import {Dimensions, Image, StyleSheet, View} from 'react-native';
-import { getPopularMovies } from '../utils/services/TMDBService';
+import React from 'react';
+import {Dimensions, Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, {
   ICarouselInstance,
   Pagination,
 } from 'react-native-reanimated-carousel';
+import { useNavigation } from '@react-navigation/native';
 import { TMDB_S3_URL } from '@env';
 import { colors } from '../config/colors';
 import ACButton from '../components/ACButton.tsx';
 import ACText from '../components/ACText.tsx';
+import useTMDB from '../hooks/useTMDB';
 
 const { width, height } = Dimensions.get('window');
 
@@ -81,8 +82,8 @@ interface Movie {
 const Slider = () => {
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
-
-  const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
+  const [ movies ] = useTMDB('top_rated');
+  const navigation = useNavigation<any>();
 
   const onPressPagination = (index: number) => {
     ref.current?.scrollTo({
@@ -95,15 +96,11 @@ const Slider = () => {
     console.log('handleWishlist');
   };
 
-  useEffect(() => {
-    getPopularMovies()
-      .then((data) => {
-        setPopularMovies(data);
-      })
-      .catch((errors) => {
-        console.log(errors);
-      });
-  }, []);
+  const handleSeeMore = () => {
+    navigation.navigate('SeeMore', {
+      title: 'Home',
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -112,9 +109,9 @@ const Slider = () => {
             ref={ref}
             width={width}
             height={height / 1.8}
-            data={popularMovies.slice(0, 6)}
+            data={movies.slice(0, 6)}
             onProgressChange={progress}
-            renderItem={({ item }) => (
+            renderItem={({ item } : any) => (
                 <Image
                     source={{
                       uri: `${TMDB_S3_URL}${item.poster_path}`,
@@ -157,13 +154,21 @@ const Slider = () => {
 
       <Pagination.Basic
         progress={progress}
-        data={popularMovies.slice(0, 6)}
+        data={movies.slice(0, 6)}
         dotStyle={styles.dotStyle}
         containerStyle={styles.containerStyle}
         activeDotStyle={styles.activeDotStyle}
         size={10}
         onPress={onPressPagination}
       />
+      <TouchableOpacity onPress={handleSeeMore}>
+        <ACText
+          text={'SeeMore text'}
+          color={colors.info}
+          fontSize={16}
+          fontWeight={600}
+        />
+      </TouchableOpacity>
     </View>
   );
 };

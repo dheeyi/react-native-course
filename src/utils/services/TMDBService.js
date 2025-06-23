@@ -19,3 +19,22 @@ export const getPopularMovies = async () => {
     console.error('errors:', error);
   }
 };
+
+export const getUpComingMovies = async () => {
+  try {
+    const response = await axios.get(`${TMDB_BASE_URL}/movie/upcoming`, {
+      headers: {
+        Authorization: `Bearer ${TMDB_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      params: {
+        language: 'en-US',
+        page: 1,
+      },
+    });
+
+    return response.data.results;
+  } catch (error) {
+    console.error('errors:', error);
+  }
+};

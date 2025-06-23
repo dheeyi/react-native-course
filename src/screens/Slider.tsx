@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, StyleSheet, TouchableOpacity, View, ScrollView} from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, {
   ICarouselInstance,
@@ -11,12 +11,14 @@ import { colors } from '../config/colors';
 import ACButton from '../components/ACButton.tsx';
 import ACText from '../components/ACText.tsx';
 import useTMDB from '../hooks/useTMDB';
+import ACCard from '../components/ACCard.tsx';
 
 const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.darkMode,
   },
   numberText: {
     textAlign: 'center',
@@ -102,8 +104,12 @@ const Slider = () => {
     });
   };
 
+  const handleCheckDetails = () => {
+    console.log('handleCheckDetails');
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.carouselSection}>
         <Carousel
             ref={ref}
@@ -161,6 +167,13 @@ const Slider = () => {
         size={10}
         onPress={onPressPagination}
       />
+      <ACCard
+        imageUrl={'../assets/black-friday.png'}
+        title={'Black friday is here!'}
+        description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra sociis pulvinar auctor nibh nibh iaculis id.'}
+        textButton={'Check details'}
+        onPress={handleCheckDetails}
+      />
       <TouchableOpacity onPress={handleSeeMore}>
         <ACText
           text={'SeeMore text'}
@@ -169,7 +182,7 @@ const Slider = () => {
           fontWeight={600}
         />
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 

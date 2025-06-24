@@ -31,7 +31,6 @@ interface ACCardProps {
 }
 
 const ACCard: FC<ACCardProps> = ({
-  imageUrl,
   title,
   description,
   textButton,
@@ -61,7 +60,7 @@ const ACCard: FC<ACCardProps> = ({
         color={colors.primary}
         text={textButton}
         textColor={colors.darkLight}
-        onPress={onPress}
+        onPress={onPress || (() => {})}
         />
     </View>
   );

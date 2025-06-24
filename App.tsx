@@ -18,8 +18,8 @@ const Stack = createNativeStackNavigator();
 const iconMap : any = {
   Home: 'house-user',
   Profile: 'id-badge',
-  Wishlist: 'stream',
-  Search: 'search',
+  Wishlist: 'list',
+  Search: 'registered',
 };
 
 const TabNavigator = () => {
@@ -39,6 +39,16 @@ const TabNavigator = () => {
         tabBarInactiveTintColor: '#FFFFFF',
         tabBarActiveBackgroundColor: '#000000',
         tabBarInactiveBackgroundColor: '#000000',
+        tabBarStyle: {
+          position: 'absolute',
+          paddingTop: 8,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          elevation: 0,
+          borderTopWidth: 0,
+          backgroundColor: '#000000',
+        },
       })}
     >
       <Tab.Screen

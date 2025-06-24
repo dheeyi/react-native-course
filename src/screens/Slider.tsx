@@ -1,5 +1,5 @@
-import React from 'react';
-import {Dimensions, Image, StyleSheet, TouchableOpacity, View, ScrollView} from 'react-native';
+import React, { useRef } from 'react';
+import {Dimensions, Image, StyleSheet, View, ScrollView} from 'react-native';
 import { useSharedValue } from 'react-native-reanimated';
 import Carousel, {
   ICarouselInstance,
@@ -10,8 +10,10 @@ import { TMDB_S3_URL } from '@env';
 import { colors } from '../config/colors';
 import ACButton from '../components/ACButton.tsx';
 import ACText from '../components/ACText.tsx';
-import useTMDB from '../hooks/useTMDB';
+import useTMDB from '../hooks/useTMDB.ts';
 import ACCard from '../components/ACCard.tsx';
+import ACHeader from '../components/ACHeader.tsx';
+import ACList from '../components/ACList.tsx';
 
 const { width, height } = Dimensions.get('window');
 
@@ -64,7 +66,7 @@ const styles = StyleSheet.create({
   },
 });
 
-interface Movie {
+export interface Movie {
   adult: boolean;
   backdrop_path: string;
   genre_ids: number[];
@@ -82,9 +84,11 @@ interface Movie {
 }
 
 const Slider = () => {
-  const ref = React.useRef<ICarouselInstance>(null);
+  const ref = useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
-  const [ movies ] = useTMDB('top_rated');
+  const [moviesPopular] = useTMDB('popular');
+  const [moviesRated] = useTMDB('top_rated');
+  const [moviesUpcoming] = useTMDB('upcoming');
   const navigation = useNavigation<any>();
 
   const onPressPagination = (index: number) => {
@@ -112,33 +116,33 @@ const Slider = () => {
     <ScrollView style={styles.container}>
       <View style={styles.carouselSection}>
         <Carousel
-            ref={ref}
-            width={width}
-            height={height / 1.8}
-            data={movies.slice(0, 6)}
-            onProgressChange={progress}
-            renderItem={({ item } : any) => (
-                <Image
-                    source={{
-                      uri: `${TMDB_S3_URL}${item.poster_path}`,
-                    }}
-                    style={styles.sliderImage}
-                />
-            )}
+          ref={ref}
+          width={width}
+          height={height / 1.8}
+          data={moviesPopular.slice(0, 6)}
+          onProgressChange={progress}
+          renderItem={({item}: any) => (
+            <Image
+              source={{
+                uri: `${TMDB_S3_URL}${item.poster_path}`,
+              }}
+              style={styles.sliderImage}
+            />
+          )}
         />
         <View style={styles.overlayContainer}>
           <View style={styles.titleButtonSection}>
             <ACText
-                text={'My List'}
-                color={colors.white}
-                fontSize={16}
-                fontWeight={600}
+              text={'My List'}
+              color={colors.white}
+              fontSize={16}
+              fontWeight={600}
             />
             <ACText
-                text={'Discover'}
-                color={colors.white}
-                fontSize={16}
-                fontWeight={600}
+              text={'Discover'}
+              color={colors.white}
+              fontSize={16}
+              fontWeight={600}
             />
           </View>
           <View style={styles.titleButtonSection}>
@@ -149,10 +153,12 @@ const Slider = () => {
               onPress={handleWishlist}
             />
             <ACButton
-                color={colors.primary}
-                text="Details"
-                textColor={colors.darkLight}
-                onPress={() => {console.log('Details');}}
+              color={colors.primary}
+              text="Details"
+              textColor={colors.darkLight}
+              onPress={() => {
+                console.log('Details');
+              }}
             />
           </View>
         </View>
@@ -160,28 +166,34 @@ const Slider = () => {
 
       <Pagination.Basic
         progress={progress}
-        data={movies.slice(0, 6)}
+        data={moviesPopular.slice(0, 6)}
         dotStyle={styles.dotStyle}
         containerStyle={styles.containerStyle}
         activeDotStyle={styles.activeDotStyle}
         size={10}
         onPress={onPressPagination}
       />
+      <ACHeader
+        title={'Rated Movies'}
+        titleNav={'SeeMore'}
+        handleNav={handleSeeMore}
+      />
+      <ACList movies={moviesRated} />
+      <ACHeader
+        title={'Upcoming Movies'}
+        titleNav={'SeeMore'}
+        handleNav={handleSeeMore}
+      />
+      <ACList movies={moviesUpcoming} />
       <ACCard
         imageUrl={'../assets/black-friday.png'}
         title={'Black friday is here!'}
-        description={'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra sociis pulvinar auctor nibh nibh iaculis id.'}
+        description={
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra sociis pulvinar auctor nibh nibh iaculis id.'
+        }
         textButton={'Check details'}
         onPress={handleCheckDetails}
       />
-      <TouchableOpacity onPress={handleSeeMore}>
-        <ACText
-          text={'SeeMore text'}
-          color={colors.info}
-          fontSize={16}
-          fontWeight={600}
-        />
-      </TouchableOpacity>
     </ScrollView>
   );
 };

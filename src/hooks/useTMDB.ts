@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import axios from 'axios';
 import { TMDB_BASE_URL, TMDB_ACCESS_TOKEN } from '@env';
 
-const useTMDB = (path) => {
+const useTMDB = (path: string) => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const useTMDB = (path) => {
     getMovies();
   }, [path]);
 
-  return [ movies ];
+  return [movies];
 };
 
 export default useTMDB;
